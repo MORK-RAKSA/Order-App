@@ -34,7 +34,7 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
 
-    private static String buildMsgTemplateForOwner(List<UserSelection> selections) {
+    private static String buildMsgTemplateForGroup(List<UserSelection> selections) {
 
         StringBuilder msg = new StringBuilder();
 
@@ -61,7 +61,7 @@ public class TelegramServiceImpl implements TelegramService {
         return msg.toString();
     }
 
-    private static String buildMsgTemplateForGroup(List<UserSelection> selections) {
+    private static String buildMsgTemplateForOwner(List<UserSelection> selections) {
 
         StringBuilder msg = new StringBuilder();
 
