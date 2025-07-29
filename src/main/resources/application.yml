@@ -2,7 +2,7 @@ spring:
   application:
     name: order
   datasource:
-    url: jdbc:h2:file:D:\order\orderDB.db
+    url: jdbc:h2:file:./orderDB.db
     driver-class-name: org.h2.Driver
     username: sa
     password:
