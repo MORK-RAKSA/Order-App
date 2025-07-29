@@ -166,11 +166,15 @@
       let currentUser = localStorage.getItem("username") || "";
       if (currentUser) userSelect.value = currentUser;
 
+      const allowedUsers = ["Raksa", "Srun"];
+      submitBtn.classList.toggle("hidden", !allowedUsers.includes(currentUser));
+
       userSelect.addEventListener("change", () => {
         currentUser = userSelect.value;
         localStorage.setItem("username", currentUser);
-        submitBtn.classList.toggle("hidden", currentUser !== "Raksa");
+        submitBtn.classList.toggle("hidden", !allowedUsers.includes(currentUser));
       });
+
 
       async function fetchFoods() {
         try {
