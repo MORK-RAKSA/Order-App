@@ -21,14 +21,16 @@ import lombok.RequiredArgsConstructor;
 public interface FoodSelectionService {
 
 
-     List<Food> getAllFoods();
+//     List<Food> getAllFoods();
 
      void saveTempSelection(UserSelection selection);
+
      void clearUser(String userId);
 
      List<UserSelection> getAllSelections();
 
      FoodResponseDto addFood(FoodRequestDto requestDto);
+
      List<FoodResponseDto> getAllFood();
 
      void clearAll();

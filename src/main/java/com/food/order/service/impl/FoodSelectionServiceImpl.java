@@ -25,9 +25,9 @@ public class FoodSelectionServiceImpl implements FoodSelectionService {
     private final FoodRepository foodRepository;
     private final FoodMapper foodMapper;
 
-    public List<Food> getAllFoods() {
-        return new ArrayList<>(availableFoods.values());
-    }
+//    public List<Food> getAllFoods() {
+//        return new ArrayList<>(availableFoods.values());
+//    }
 
     public void saveTempSelection(UserSelection selection) {
         String key = selection.getUserId().trim().toLowerCase();
