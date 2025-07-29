@@ -17,50 +17,20 @@ import com.food.order.repository.FoodRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
-public class FoodSelectionService {
-    private final Map<String, Food> availableFoods = new LinkedHashMap<>();
-    private final Map<String, UserSelection> selections = new ConcurrentHashMap<>();
-    private final FoodRepository foodRepository;
-    private final FoodMapper foodMapper;
 
-    public List<Food> getAllFoods() {
-        return new ArrayList<>(availableFoods.values());
-    }
-
-    public void saveTempSelection(UserSelection selection) {
-        String key = selection.getUserId().trim().toLowerCase();
-        selections.put(key, selection);
-    }
-
-    public void clearUser(String userId) {
-        String key = userId.trim().toLowerCase();
-        System.out.println("Trying to clear key: " + key);
-        System.out.println("Stored keys before clear: " + selections.keySet());
-        selections.remove(key);
-        System.out.println("Stored keys after clear: " + selections.keySet());
-    }
+public interface FoodSelectionService {
 
 
-    public List<UserSelection> getAllSelections() {
-        return new ArrayList<>(selections.values());
-    }
+     List<Food> getAllFoods();
 
-    public FoodResponseDto addFood(FoodRequestDto requestDto){
-        Food entity = foodMapper.toRequestDto(requestDto);
-        Food saved = foodRepository.save(entity);
-        return foodMapper.toResponseDto(saved);
-    }
+     void saveTempSelection(UserSelection selection);
+     void clearUser(String userId);
 
-    public List<FoodResponseDto> getAllFood(){
-        List<Food> entity = foodRepository.findAll();
-        return entity.stream()
-        .map(foodMapper::toResponseDto)
-        .toList();
-    }
+     List<UserSelection> getAllSelections();
 
-    public void clearAll() {
-        selections.clear();
-    }
+     FoodResponseDto addFood(FoodRequestDto requestDto);
+     List<FoodResponseDto> getAllFood();
+
+     void clearAll();
+
 }

@@ -13,4 +13,5 @@ import lombok.Setter;
 public class TelegramProperties {
     private String botToken;
     private String chatId;
+    private String ownerChatId;
 }

@@ -52,40 +52,9 @@ public class OrderController {
 
     @PostMapping("/submit-all")
     public ResponseEntity<String> submitAll(@RequestBody List<UserSelection> selections) {
-
-        if (selections.isEmpty()) {
-            return null;
-        }
-
-        int userCount = selections.size();
-
-        StringBuilder msg = new StringBuilder();
-        msg.append("Order Summary")
-        .append("\nDate: ").append(LocalDate.now())
-        .append("\nTotal Users: ").append(userCount)
-        .append("\n_____________________________\n");
-
-        int index = 1;
-        for (UserSelection sel : selections) {
-            msg.append("\n").append(index++).append(": ").append(sel.getUserId())
-            .append("\nOrder: ").append(sel.getName());
-
-            if (sel.getVariant() != null && !sel.getVariant().isBlank()) {
-                msg.append(" (").append(sel.getVariant()).append(")");
-            }
-
-            if (sel.getNote() != null && !sel.getNote().isBlank()) {
-                msg.append("\nNote: ").append(sel.getNote());
-            }
-
-            msg.append("\n_____________________________");
-        }
-
-
-        telegramService.sendMessage(msg.toString());
-        foodSelectionService.clearAll();
-
+        telegramService.sendMessage(selections);
         return ResponseEntity.ok("Submitted to Telegram");
     }
+
 
 }

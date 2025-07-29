@@ -16,4 +16,7 @@ server:
   
 telegram:
   bot-token: 8294055596:AAF-ncqY2X1Yipq_1DebHLDaaoEQ4Ckr3sA
-  chat-id: 6066544575
+  #GROUP
+  chat-id: -4839886352
+  #SRUN
+  ownerChatId:
