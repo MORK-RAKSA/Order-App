@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order
+  datasource:
+    url: jdbc:h2:file:D:\order\orderDB.db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+telegram:
+  bot-token: 8294055596:AAF-ncqY2X1Yipq_1DebHLDaaoEQ4Ckr3sA
+  chat-id: 6066544575
