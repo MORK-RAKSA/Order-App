@@ -1,0 +1,74 @@
+[
+  {
+    "id": 2,
+    "name": "ឆាជូអែមឆ្អឹងជំនីជ្រូក",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 66,
+    "name": "ម្ជូរគ្រឿង",
+    "variants": ["Beef", "Chicken", "Pork", "Fish"],
+    "note": null
+  },
+  {
+    "id": 67,
+    "name": "ឡុកឡាក់សាច់គោ",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 68,
+    "name": "មាន់លីងស្លឹកគ្រៃ",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 69,
+    "name": "មីស៊ុប",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 70,
+    "name": "ឆាក្តៅ",
+    "variants": ["សាច់កង្កែប", "Chicken", "Pork", "Beef"],
+    "note": null
+  },
+  {
+    "id": 71,
+    "name": "ចៀនត្រីប្រម៉ា",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 72,
+    "name": "តុងយ៉ាំ",
+    "variants": ["សាច់កង្កែប", "Chicken", "Beef"],
+    "note": null
+  },
+  {
+    "id": 73,
+    "name": "សម្លកកូរ",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 74,
+    "name": "គុយទាវ",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 75,
+    "name": "ខសាច់ជ្រូក",
+    "variants": null,
+    "note": null
+  },
+  {
+    "id": 76,
+    "name": "សម្លស្ងោរជីឆាយ",
+    "variants": null,
+    "note": null
+  }
+]

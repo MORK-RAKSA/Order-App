@@ -174,7 +174,7 @@
 
       async function fetchFoods() {
         try {
-          const response = await axios.get("http://localhost:8080/api/get-all");
+          const response = await axios.get("https://order-app-fl5q.onrender.com/api/get-all");
           return response.data || [];
         } catch (err) {
           console.error("Error fetching foods:", err);
@@ -248,7 +248,7 @@
             userCanvas.appendChild(displayItem);
 
             try {
-              await axios.post("http://localhost:8080/api/save-temp-selection", foodData);
+              await axios.post("https://order-app-fl5q.onrender.com/api/save-temp-selection", foodData);
               localStorage.setItem("tempSelection", JSON.stringify(foodData));
             } catch (err) {
               console.error("Temp save failed:", err);
@@ -268,7 +268,7 @@
         localStorage.removeItem("tempSelection");
 
         try {
-          await axios.delete(`http://localhost:8080/api/clear-temp-selection/${normalizedUserId}`);
+          await axios.delete(`https://order-app-fl5q.onrender.com/api/clear-temp-selection/${normalizedUserId}`);
           console.log("Successfully cleared temp selection.");
         } catch (err) {
           console.error("Failed to clear temp selection:", err);
@@ -278,9 +278,9 @@
 
       submitBtn.addEventListener("click", async () => {
         try {
-          const response = await axios.get("http://localhost:8080/api/temp-selections");
+          const response = await axios.get("https://order-app-fl5q.onrender.com/api/temp-selections");
           const payload = response.data || [];
-          await axios.post("http://localhost:8080/api/submit-all", payload);
+          await axios.post("https://order-app-fl5q.onrender.com/api/submit-all", payload);
           alert("Submitted all selections to Telegram!");
         } catch (err) {
           console.error("Submit error:", err);
@@ -290,7 +290,7 @@
 
       async function pollSelections() {
         try {
-          const response = await axios.get("http://localhost:8080/api/temp-selections");
+          const response = await axios.get("https://order-app-fl5q.onrender.com/api/temp-selections");
           const selections = response.data || [];
           userCanvas.innerHTML = "";
           selections.forEach((sel) => {

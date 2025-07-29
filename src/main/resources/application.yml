@@ -11,6 +11,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+server:
+  port: 8080
+  
 telegram:
   bot-token: 8294055596:AAF-ncqY2X1Yipq_1DebHLDaaoEQ4Ckr3sA
   chat-id: 6066544575
