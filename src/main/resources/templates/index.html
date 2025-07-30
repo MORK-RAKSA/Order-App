@@ -295,12 +295,12 @@
 
       async function pollSelections() {
         try {
-          const response = await axios.get(`${APP_URL}/temp-selections`);
+          const response = await axios.get("https://order-app-fl5q.onrender.com/api/temp-selections");
           const selections = response.data || [];
           userCanvas.innerHTML = "";
           selections.forEach((sel) => {
             const item = document.createElement("li");
-            item.textContent = `${sel.userId}: ${sel.name}`;
+            item.textContent = `${sel.userId}: ${sel.name} (${sel.variant}) - NOTE: ${sel.note}`;
             item.className = "bg-white bg-opacity-70 rounded-xl p-4 shadow transition";
             userCanvas.appendChild(item);
           });
