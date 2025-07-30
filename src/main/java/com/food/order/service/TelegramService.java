@@ -1,13 +1,9 @@
 package com.food.order.service;
 import com.food.order.model.UserSelection;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
 public interface TelegramService {
 
-
      void sendMessage(List<UserSelection> selections);
-
 }

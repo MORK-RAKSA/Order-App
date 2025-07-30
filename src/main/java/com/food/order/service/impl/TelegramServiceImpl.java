@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class TelegramServiceImpl implements TelegramService {
 
-
     private final FoodSelectionService foodSelectionService;
     private final TelegramRestClient telegramRestClient;
 
@@ -33,7 +32,7 @@ public class TelegramServiceImpl implements TelegramService {
 
     }
 
-
+    // buildMsgTemplateForGroup
     private static String buildMsgTemplateForGroup(List<UserSelection> selections) {
 
         StringBuilder msg = new StringBuilder();
@@ -51,7 +50,6 @@ public class TelegramServiceImpl implements TelegramService {
             if (sel.getVariant() != null && !sel.getVariant().isBlank()) {
                 msg.append(" (").append(sel.getVariant()).append(")");
             }
-
             if (sel.getNote() != null && !sel.getNote().isBlank()) {
                 msg.append("\nNote: ").append(sel.getNote());
             }
@@ -61,6 +59,7 @@ public class TelegramServiceImpl implements TelegramService {
         return msg.toString();
     }
 
+    // buildMsgTemplateForOwner
     private static String buildMsgTemplateForOwner(List<UserSelection> selections) {
 
         StringBuilder msg = new StringBuilder();
@@ -78,7 +77,6 @@ public class TelegramServiceImpl implements TelegramService {
             if (sel.getVariant() != null && !sel.getVariant().isBlank()) {
                 msg.append(" (").append(sel.getVariant()).append(")");
             }
-
             if (sel.getNote() != null && !sel.getNote().isBlank()) {
                 msg.append("\nកំណត់ចំណាំ: ").append(sel.getNote());
             }

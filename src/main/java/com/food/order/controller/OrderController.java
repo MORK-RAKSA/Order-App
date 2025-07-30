@@ -10,7 +10,6 @@ import com.food.order.service.TelegramService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -55,6 +54,5 @@ public class OrderController {
         telegramService.sendMessage(selections);
         return ResponseEntity.ok("Submitted to Telegram");
     }
-
 
 }
