@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: order
+  datasource:
+    url: jdbc:h2:file:./orderDB.db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080
+  
+telegram:
+  bot-token: 8294055596:AAF-ncqY2X1Yipq_1DebHLDaaoEQ4Ckr3sA
+  #GROUP
+  chat-id: -4839886352
+  #SRUN
+  owner-chat-id: 854148566
+app:
+  APP_URL: http://localhost:8080/api
+#  APP_URL: https://order-app-fl5q.onrender.com/api
