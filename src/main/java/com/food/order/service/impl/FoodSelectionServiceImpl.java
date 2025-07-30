@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+// import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class FoodSelectionServiceImpl implements FoodSelectionService {
-    private final Map<String, Food> availableFoods = new LinkedHashMap<>();
+    // private final Map<String, Food> availableFoods = new LinkedHashMap<>();
     private final Map<String, UserSelection> selections = new ConcurrentHashMap<>();
     private final FoodRepository foodRepository;
     private final FoodMapper foodMapper;
