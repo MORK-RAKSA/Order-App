@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -123,7 +123,7 @@
                     ></path>
                   </g>
                 </svg>
-                <input type="text" id="food-search" placeholder="Search" class="input" style="padding-left: 2.5rem;" />
+                  <label for="food-search"></label><input type="text" id="food-search" placeholder="Search" class="input" style="padding-left: 2.5rem;" />
               </div>
               <div class="min-h-[200px] max-h-[400px] overflow-y-auto scroll-smooth">
                 <ul
@@ -155,13 +155,14 @@
         </div>
     </div>
 
-    <script>
-      const userSelect = document.getElementById("user-select");
-      const foodList = document.getElementById("food-list");
-      const userCanvas = document.getElementById("user-canvas");
-      const clearBtn = document.getElementById("clear-selection");
-      const submitBtn = document.getElementById("submit-selection");
-      const foodSearchInput = document.getElementById("food-search");
+    <script th:inline="javascript">
+        const APP_URL = /*[[${appUrl}]]*/ "";
+        const userSelect = document.getElementById("user-select");
+        const foodList = document.getElementById("food-list");
+        const userCanvas = document.getElementById("user-canvas");
+        const clearBtn = document.getElementById("clear-selection");
+        const submitBtn = document.getElementById("submit-selection");
+        const foodSearchInput = document.getElementById("food-search");
 
       let currentUser = localStorage.getItem("username") || "";
       if (currentUser) userSelect.value = currentUser;
@@ -178,7 +179,7 @@
 
       async function fetchFoods() {
         try {
-          const response = await axios.get("https://order-app-fl5q.onrender.com/api/get-all");
+          const response = await axios.get(`${APP_URL}/get-all`);
           return response.data || [];
         } catch (err) {
           console.error("Error fetching foods:", err);
@@ -252,7 +253,7 @@
             userCanvas.appendChild(displayItem);
 
             try {
-              await axios.post("https://order-app-fl5q.onrender.com/api/save-temp-selection", foodData);
+              await axios.post(`${APP_URL}/save-temp-selection`, foodData);
               localStorage.setItem("tempSelection", JSON.stringify(foodData));
             } catch (err) {
               console.error("Temp save failed:", err);
@@ -272,7 +273,7 @@
         localStorage.removeItem("tempSelection");
 
         try {
-          await axios.delete(`https://order-app-fl5q.onrender.com/api/clear-temp-selection/${normalizedUserId}`);
+          await axios.delete(`${APP_URL}/clear-temp-selection/${normalizedUserId}`);
           console.log("Successfully cleared temp selection.");
         } catch (err) {
           console.error("Failed to clear temp selection:", err);
@@ -282,9 +283,9 @@
 
       submitBtn.addEventListener("click", async () => {
         try {
-          const response = await axios.get("https://order-app-fl5q.onrender.com/api/temp-selections");
+          const response = await axios.get(`${APP_URL}/temp-selections`);
           const payload = response.data || [];
-          await axios.post("https://order-app-fl5q.onrender.com/api/submit-all", payload);
+          await axios.post("http://localhost:8080/api/submit-all", payload);
           alert("Submitted all selections to Telegram!");
         } catch (err) {
           console.error("Submit error:", err);
@@ -294,7 +295,7 @@
 
       async function pollSelections() {
         try {
-          const response = await axios.get("https://order-app-fl5q.onrender.com/api/temp-selections");
+          const response = await axios.get(`${APP_URL}/temp-selections`);
           const selections = response.data || [];
           userCanvas.innerHTML = "";
           selections.forEach((sel) => {

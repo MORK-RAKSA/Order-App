@@ -1,5 +1,8 @@
 package com.food.order.controller;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.food.order.controller.dto.FoodRequestDto;
@@ -16,7 +19,16 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@ConfigurationProperties(prefix = "app")
 public class OrderController {
+
+    private String appUrl;
+
+    @GetMapping("/launch")
+    public String launchPage(Model model) {
+        model.addAttribute("appUrl", appUrl);
+        return "launch"; // maps to launch.html
+    }
 
     private final FoodSelectionService foodSelectionService;
     private final TelegramService telegramService;
