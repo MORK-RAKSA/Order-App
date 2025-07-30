@@ -19,7 +19,7 @@ bin/
 
 .env
 *.yml
-src/main/resources/application.yml
+application.yml
 
 ### IntelliJ IDEA ###
 .idea
