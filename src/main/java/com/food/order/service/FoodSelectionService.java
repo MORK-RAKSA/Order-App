@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 
 public interface FoodSelectionService {
 
-
 //     List<Food> getAllFoods();
 
      void saveTempSelection(UserSelection selection);

@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class TelegramServiceImpl implements TelegramService {
 
-
     private final FoodSelectionService foodSelectionService;
     private final TelegramRestClient telegramRestClient;
 
@@ -26,13 +25,13 @@ public class TelegramServiceImpl implements TelegramService {
         if (ObjectUtils.isEmpty(selections)) {
             throw new RuntimeException();
         }
+        
         String messageGroup = buildMsgTemplateForGroup(selections);
         String messageOwner = buildMsgTemplateForOwner(selections);
         telegramRestClient.sendMessage(messageGroup, messageOwner);
         foodSelectionService.clearAll();
 
     }
-
 
     private static String buildMsgTemplateForGroup(List<UserSelection> selections) {
 
