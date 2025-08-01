@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface TelegramService {
 
-     void sendMessage(List<UserSelection> selections);
+     void sendMessage(List<UserSelection> selections,String phone);
 
 }

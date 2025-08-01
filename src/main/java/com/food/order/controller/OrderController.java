@@ -66,8 +66,8 @@ public class OrderController {
     }
 
     @PostMapping("/submit-all")
-    public ResponseEntity<String> submitAll(@RequestBody List<UserSelection> selections) {
-        telegramService.sendMessage(selections);
+    public ResponseEntity<String> submitAll(@RequestBody List<UserSelection> selections, String phone) {
+        telegramService.sendMessage(selections,phone);
         return ResponseEntity.ok("Submitted to Telegram");
     }
 
