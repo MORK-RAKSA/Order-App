@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: order
+  # config:
+  #   activate:
+  #     on-profile: local
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
+
+telegram:
+  bot-token: ${BOT_TOKEN}
+  chat-id: ${CHAT_ID}
+  ownerChatId: ${OWNER_CHAT_ID}
+app:
+#  APP_URL: http://localhost:8080
+   APP_URL: https://order-app-fl5q.onrender.com/api
+
