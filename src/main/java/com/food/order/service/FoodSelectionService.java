@@ -22,4 +22,6 @@ public interface FoodSelectionService {
 
      void clearAll();
 
+     void deleteById(String id);
+
 }

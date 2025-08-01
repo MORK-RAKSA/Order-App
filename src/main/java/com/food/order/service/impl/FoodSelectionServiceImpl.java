@@ -64,4 +64,8 @@ public class FoodSelectionServiceImpl implements FoodSelectionService {
         selections.clear();
     }
 
+    public void deleteById(String id){
+        foodRepository.deleteById(id);
+    }
+
 }

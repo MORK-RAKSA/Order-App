@@ -1,6 +1,5 @@
 package com.food.order.controller;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +12,20 @@ import com.food.order.service.TelegramService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@ConfigurationProperties(prefix = "app")
 public class OrderController {
 
+    @Value("${app.APP_URL}")
     private String appUrl;
-
+    
     @GetMapping("/launch")
     public String launchPage(Model model) {
-        model.addAttribute("appUrl", appUrl);
-        return "launch"; // maps to launch.html
+        model.addAttribute("appUrl", appUrl.toString());
+        return "launch";
     }
 
     private final FoodSelectionService foodSelectionService;
@@ -36,6 +34,12 @@ public class OrderController {
     @PostMapping("/save-temp-selection")
     public ResponseEntity<Void> saveTemp(@RequestBody UserSelection selection) {
         foodSelectionService.saveTempSelection(selection);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Void> saveTemp(@RequestParam String id) {
+        foodSelectionService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
@@ -49,7 +53,6 @@ public class OrderController {
         foodSelectionService.clearUser(userId);
         return ResponseEntity.ok().build();
     }
-
 
     @PostMapping("/add-food")
     public ResponseEntity<FoodResponseDto> addFood(@RequestBody FoodRequestDto requestDto){
@@ -67,6 +70,5 @@ public class OrderController {
         telegramService.sendMessage(selections);
         return ResponseEntity.ok("Submitted to Telegram");
     }
-
 
 }

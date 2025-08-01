@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Food Selection</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col items-center p-10 space-y-6">
+
+  <!-- Add Form -->
+  <div class="max-w-2xl w-full bg-white rounded-2xl p-6 shadow space-y-4">
+    <h2 class="text-xl font-bold text-gray-700">Add Food</h2>
+    <input id="food-name" type="text" placeholder="Food name" class="w-full border p-3 rounded-xl" />
+    <input id="variant" type="text" placeholder="Variants (comma separated)" class="w-full border p-3 rounded-xl" />
+    <input id="note" type="text" placeholder="Note (optional)" class="w-full border p-3 rounded-xl" />
+    <button id="add-btn" class="w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600">Add Food</button>
+  </div>
+
+  <!-- Preview Canvas -->
+  <div class="max-w-2xl w-full bg-white rounded-2xl p-6 shadow">
+    <h3 class="text-lg font-bold text-gray-700 mb-4">Food List</h3>
+    <ul id="preview-canvas" class="space-y-2"></ul>
+  </div>
+
+  <script>
+    const addBtn = document.getElementById("add-btn");
+    const foodInput = document.getElementById("food-name");
+    const variantInput = document.getElementById("variant");
+    const noteInput = document.getElementById("note");
+    const previewCanvas = document.getElementById("preview-canvas");
+
+    async function loadFoods() {
+      try {
+        const response = await axios.get("http://localhost:8080/api/get-all");
+        const foods = response.data || [];
+        renderCanvas(foods);
+      } catch (error) {
+        console.error("Failed to fetch foods:", error);
+      }
+    }
+
+    function renderCanvas(data) {
+      previewCanvas.innerHTML = "";
+      data.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "bg-gray-100 p-4 rounded-xl flex justify-between items-center";
+
+        li.innerHTML = `
+          <span>
+            ${item.name}${item.variant ? ` (${item.variant})` : ""}${item.note ? ` — ${item.note}` : ""}
+          </span>
+          <button onclick="deleteFood('${item.id}')" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
+        `;
+        previewCanvas.appendChild(li);
+      });
+    }
+
+    async function deleteFood(id) {
+      try {
+        await axios.post(`http://localhost:8080/api/delete?id=${id}`);
+        await loadFoods();
+      } catch (error) {
+        console.error("Delete failed:", error);
+        alert("Failed to delete food.");
+      }
+    }
+
+    addBtn.addEventListener("click", async () => {
+      const name = foodInput.value.trim();
+      const variant = variantInput.value.trim();
+      const note = noteInput.value.trim();
+
+      if (!name) {
+        alert("Please enter a food name.");
+        return;
+      }
+
+      try {
+        await axios.post("http://localhost:8080/api/add-food", {
+          name,
+          variant,
+          note,
+        });
+        foodInput.value = "";
+        variantInput.value = "";
+        noteInput.value = "";
+        await loadFoods();
+      } catch (error) {
+        console.error("Add food failed:", error);
+        alert("Failed to add food.");
+      }
+    });
+
+    window.onload = loadFoods;
+  </script>
+</body>
+</html>
