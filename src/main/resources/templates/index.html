@@ -69,8 +69,8 @@
     </div>
   </div>
 
-  <script>
-    const APP_URL = "http://localhost:8080";
+  <script th:inline="javascript">
+    const APP_URL = /*[[${appUrl}]]*/ "";
 
     const userSelect = document.getElementById("user-select");
     const foodList = document.getElementById("food-list");
