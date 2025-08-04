@@ -35,7 +35,7 @@ public class TelegramServiceImpl implements TelegramService {
 
     private static String buildMsgTemplateForGroup(List<UserSelection> selections) {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedTime = now.format(formatter);
 
         StringBuilder msg = new StringBuilder();

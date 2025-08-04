@@ -119,7 +119,7 @@
         const img = document.createElement("img");
         img.src = food.image || "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
         img.alt = food.name;
-        img.className = "w-full h-36 object-cover";
+        img.className = "w-full h-40 object-cover";
 
         const content = document.createElement("div");
         content.className = "p-3 flex flex-col gap-2";
@@ -197,17 +197,33 @@
       }
     });
 
+    // Submit button
+    let isSubmitting = false;
+
     submitBtn.addEventListener("click", async () => {
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
       try {
         const response = await axios.get(`${APP_URL}/api/temp-selections`);
         const payload = response.data || [];
+
         await axios.post(`${APP_URL}/api/submit-all`, payload);
+
         alert("Submitted all selections to Telegram!");
       } catch (err) {
         console.error("Submit error:", err);
         alert("Failed to submit selections.");
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
       }
     });
+
 
     async function pollSelections() {
       try {
