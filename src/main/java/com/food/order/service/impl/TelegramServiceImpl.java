@@ -20,14 +20,14 @@ public class TelegramServiceImpl implements TelegramService {
     private final FoodSelectionService foodSelectionService;
     private final TelegramRestClient telegramRestClient;
 
-    public void sendMessage(List<UserSelection> selections,String phone) {
+    public void sendMessage(List<UserSelection> selections) {
 
         if (ObjectUtils.isEmpty(selections)) {
             throw new RuntimeException();
         }
         
         String messageGroup = buildMsgTemplateForGroup(selections);
-        String messageOwner = buildMsgTemplateForOwner(selections,phone);
+        String messageOwner = buildMsgTemplateForOwner(selections);
         telegramRestClient.sendMessage(messageGroup, messageOwner);
         foodSelectionService.clearAll();
 
@@ -64,20 +64,20 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
 
-    private static String buildMsgTemplateForOwner(List<UserSelection> selections, String phone) {
+    private static String buildMsgTemplateForOwner(List<UserSelection> selections) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedTime = now.format(formatter);
 
         StringBuilder msg = new StringBuilder();
 
-        msg.append(String.format("បញ្ជាទិញពី: %s", phone))
+        msg.append(String.format("កុម្ម៉ង់ពី: 086252502"))
                 .append("\nកាលបរិច្ឆេទ: ").append(formattedTime)
                 .append("\nមនុស្សសរុប: ").append(selections.size())
                 .append("\n-----------------------------------");
 
         int index = 1;
-        msg.append("\n. បញ្ជាទិញ:");
+        msg.append("\n. មុខម្ហូប:");
         for (UserSelection sel : selections) {
             msg.append(String.format("\n%d.      ", index++)).append(sel.getName());
 

@@ -39,6 +39,7 @@
       <option value="Vann The Bonath">Vann The Bonath</option>
       <option value="Mony">Mony</option>
     </select>
+    <input id="phone-input" type="text">
     <a href="/management" class="mt-4 inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-xl shadow transition">Management</a>
   </div>
 
@@ -64,7 +65,7 @@
       </div>
       <div class="flex flex-col sm:flex-row gap-2 mt-6">
         <button id="clear-selection" class="py-2 px-6 rounded-xl bg-red-400 text-white hover:bg-red-500 w-full sm:w-auto">Clear</button>
-        <button id="submit-selection" class="py-2 px-6 rounded-xl bg-blue-400 text-white hover:bg-blue-500 w-full sm:w-auto hidden">Submit</button>
+        <button type="submit" id="submit-selection" class="py-2 px-6 rounded-xl bg-blue-400 text-white hover:bg-blue-500 w-full sm:w-auto hidden">Submit</button>
       </div>
     </div>
   </div>
@@ -198,12 +199,21 @@
     });
 
     // Submit button
+    const phoneInput = document.getElementById("phone-input");
+
     let isSubmitting = false;
 
     submitBtn.addEventListener("click", async () => {
+      const phoneNumber = phoneInput.value.trim();
+
+      // Validate phone number
+      if (!phoneNumber.match(/^[0-9]{8,15}$/)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+
       if (isSubmitting) return;
       isSubmitting = true;
-
       submitBtn.disabled = true;
       submitBtn.textContent = "Submitting...";
 
@@ -211,7 +221,13 @@
         const response = await axios.get(`${APP_URL}/api/temp-selections`);
         const payload = response.data || [];
 
-        await axios.post(`${APP_URL}/api/submit-all`, payload);
+        // Add phone number to payload
+        const submissionPayload = {
+          phone: phoneNumber,
+          selections: payload
+        };
+
+        await axios.post(`${APP_URL}/api/submit-all`, submissionPayload);
 
         alert("Submitted all selections to Telegram!");
       } catch (err) {
@@ -220,9 +236,10 @@
       } finally {
         isSubmitting = false;
         submitBtn.disabled = false;
-        submitBtn.textContent = "Submit";
+        submitBtn.textContent = "Submit Selection";
       }
     });
+
 
 
     async function pollSelections() {
