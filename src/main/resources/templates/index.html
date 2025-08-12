@@ -1,333 +1,254 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Order Launch</title>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Khmer&display=swap" rel="stylesheet">
-    <style>
-        body {
-            /* background-color: linear-gradient(135deg, #e0f7fa, #ede7f6); */
-            width: 100%;
-            height: 100%;
-            /* Add your background pattern here */
-            background-color: #ffffff;
-            background-image: radial-gradient(rgba(127, 70, 225, 0.106) 2px, transparent 0);
-            background-size: 30px 30px;
-            background-position: -5px -5px
-        }
-        .glass {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-        }
-        html {
-            font-family: "Khmer", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-        .scale-click {
-            transform: scale(0.98);
-            transition: transform 0.2s ease-in-out;
-        }
-        .group {
-          display: flex;
-          line-height: 28px;
-          align-items: center;
-          position: relative;
-          width: 0 auto;
-          margin-bottom: 18px;
-        }
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Launch - Modern UI</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Khmer&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffffff;
+      background-image: radial-gradient(rgba(127, 70, 225, 0.1) 2px, transparent 0);
+      background-size: 30px 30px;
+      background-position: -5px -5px;
+      font-family: "Khmer", sans-serif;
+    }
+    .glass {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    }
+    #food-list { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-8 space-y-6">
 
-        .input {
-          width: 100%;
-          height: 48px;
-          line-height: 28px;
-          padding: 0 1rem;
-          /* padding-left: 2.5rem; */
-          border: 0.5px solid black;
-          border-radius: 10px;
-          /* outline: 1px; */
-          background-color: #ffffff;
-          color: #0d0c22;
-          transition: 0.3s ease;
-        }
+  <!-- User Selector -->
+  <div class="max-w-4xl w-full glass p-6 rounded-3xl mb-6">
+    <label for="user-select" class="block font-semibold text-lg mb-2">Select Your Name:</label>
+    <select id="user-select" class="w-full rounded-xl border p-3">
+      <option disabled selected hidden value="">Select your name</option>
+      <option value="Raksa">Raksa</option>
+      <option value="Srun">Srun</option>
+      <option value="Vann">Vann</option>
+      <option value="Piseth">Piseth</option>
+      <option value="Virak">Virak</option>
+      <option value="Vann The Bonath">Vann The Bonath</option>
+      <option value="Mony">Mony</option>
+    </select>
+    <a href="/management" class="mt-4 inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-xl shadow transition">Management</a>
+  </div>
 
-        .input::placeholder {
-          color: #9e9ea7;
-        }
+  <!-- Main Container -->
+  <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        .input:focus,
-        input:hover {
-          outline: none;
-          border-color: rgba(71, 99, 255, 0.46);
-          background-color: #fff;
-          box-shadow: 0 0 0 4px rgba(17, 0, 255, 0.142);
-        }
+    <!-- Available Foods -->
+    <div class="glass rounded-3xl p-6">
+      <h2 class="text-2xl font-bold mb-4">Available Foods</h2>
+      <input type="text" id="food-search" placeholder="Search" class="w-full border p-3 rounded-xl mb-4" />
 
-        .icon {
-          position: absolute;
-          left: 1rem;
-          fill: #9e9ea7;
-          width: 1rem;
-          height: 1rem;
-        }
-        #food-list {
-          scroll-behavior: smooth;
-        }
-
-
-    </style>
-
-  </head>
-  <body class="min-h-screen flex flex-col items-center justify-center p-10 space-y-6">
-    <div class="container mx-auto px-4 sm:px-6 py-6">
-    <!-- Name Selection -->
-    <div class="max-w-4xl mx-auto glass p-6 rounded-3xl text-gray-700 mb-6">
-        <label for="user-select" class="block font-semibold text-lg mb-2">Select Your Name:</label>
-        <select
-          id="user-select"
-          class="w-full appearance-none rounded-xl bg-white text-gray-700 input"
-        >
-          <option disabled selected hidden value="">Select your name</option>
-          <option value="Raksa">Raksa</option>
-          <option value="Vann">Vann</option>
-          <option value="Srun">Srun</option>
-          <option value="Vann the Bonath">Vann the Bonath</option>
-          <option value="Piseth">Piseth</option>
-          <option value="Vireak">Vireak</option>
-          <option value="Mony">Mony</option>
-        </select>
-        <button class="mt-4">
-          <a href="./management.html" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-xl shadow transition">
-            Go to Management
-          </a>
-        </button>
+    <div class="h-[600px] overflow-y-auto border rounded-lg bg-gray-50 p-4">
+      <ul id="food-list" class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4"></ul>
     </div>
 
-        <!-- Main Content -->
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">        
-        <!-- Food List -->
-          <div class="glass rounded-3xl p-6 text-gray-800">
-              <h2 class="text-2xl font-bold mb-4">Available Foods</h2>
-
-              <div class="group">
-                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-                  <g>
-                    <path
-                      d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
-                    ></path>
-                  </g>
-                </svg>
-                  <label for="food-search"></label><input type="text" id="food-search" placeholder="Search" class="input" style="padding-left: 2.5rem;" />
-              </div>
-              <div class="min-h-[200px] max-h-[400px] overflow-y-auto scroll-smooth">
-                <ul
-                  id="food-list"
-                  class="space-y-2"
-                >
-                </ul>
-              </div>
-          </div>
-
-          <!-- User Canvas -->
-          <div class="glass rounded-3xl p-6 text-gray-800 flex flex-col justify-between">
-              <div>
-                <h2 class="text-2xl font-bold mb-6">Selections</h2>
-                <ul id="user-canvas" class="space-y-2 min-h-[300px] max-h-[400px] overflow-y-auto border-dashed border-2 border-purple-300 p-4 rounded-xl">
-                    <!-- Selected food with optional variant and note -->
-                </ul>
-              </div>
-
-              <div class="flex flex-col sm:flex-row sm:items-center mt-6 space-y-2 sm:space-y-0 sm:space-x-2">
-                <button id="clear-selection" class="py-2 px-6 rounded-xl bg-red-400 text-white hover:bg-red-500 w-full sm:w-auto">
-                    Clear
-                </button>
-                <button id="submit-selection" class="py-2 px-6 rounded-xl bg-blue-400 text-white hover:bg-blue-00 w-full sm:w-auto hidden">
-                    Submit
-                </button>
-              </div>
-          </div>
-        </div>
     </div>
 
-    <script th:inline="javascript">
-      const APP_URL = /*[[${appUrl}]]*/ "";
+    <!-- User Selections -->
+    <div class="glass rounded-3xl p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold mb-6">Selections</h2>
+        <ul id="user-canvas" class="space-y-2 h-auto overflow-y-auto border-dashed border-2 border-purple-300 p-4 rounded-xl"></ul>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-2 mt-6">
+        <button id="clear-selection" class="py-2 px-6 rounded-xl bg-red-400 text-white hover:bg-red-500 w-full sm:w-auto">Clear</button>
+        <button id="submit-selection" class="py-2 px-6 rounded-xl bg-blue-400 text-white hover:bg-blue-500 w-full sm:w-auto hidden">Submit</button>
+      </div>
+    </div>
+  </div>
 
-        const userSelect = document.getElementById("user-select");
-        const foodList = document.getElementById("food-list");
-        const userCanvas = document.getElementById("user-canvas");
-        const clearBtn = document.getElementById("clear-selection");
-        const submitBtn = document.getElementById("submit-selection");
-        const foodSearchInput = document.getElementById("food-search");
+  <script th:inline="javascript">
+    const APP_URL = /*[[${appUrl}]]*/ "";
 
-      let currentUser = localStorage.getItem("username") || "";
-      if (currentUser) userSelect.value = currentUser;
+    const userSelect = document.getElementById("user-select");
+    const foodList = document.getElementById("food-list");
+    const userCanvas = document.getElementById("user-canvas");
+    const clearBtn = document.getElementById("clear-selection");
+    const submitBtn = document.getElementById("submit-selection");
+    const foodSearchInput = document.getElementById("food-search");
 
-      const allowedUsers = ["Raksa", "Srun"];
+    let currentUser = localStorage.getItem("username") || "";
+    if (currentUser) userSelect.value = currentUser;
+
+    const allowedUsers = ["Raksa", "Srun"];
+    submitBtn.classList.toggle("hidden", !allowedUsers.includes(currentUser));
+
+    userSelect.addEventListener("change", () => {
+      currentUser = userSelect.value;
+      localStorage.setItem("username", currentUser);
       submitBtn.classList.toggle("hidden", !allowedUsers.includes(currentUser));
+    });
 
-      userSelect.addEventListener("change", () => {
-        currentUser = userSelect.value;
-        localStorage.setItem("username", currentUser);
-        submitBtn.classList.toggle("hidden", !allowedUsers.includes(currentUser));
-      });
+    let allFoods = [];
 
+    foodSearchInput.addEventListener("input", () => {
+      const query = foodSearchInput.value.toLowerCase();
+      const filteredFoods = allFoods.filter(food => food.name.toLowerCase().includes(query));
+      renderFoods(filteredFoods);
+    });
 
-      async function fetchFoods() {
-        try {
-          const response = await axios.get(`${APP_URL}/api/get-all`)
-          return response.data || [];
-        } catch (err) {
-          console.error("Error fetching foods:", err);
-          foodList.innerHTML = '<li class="text-red-500">Failed to load food list.</li>';
-          return [];
-        }
+    async function fetchFoods() {
+      try {
+        const response = await axios.get(`${APP_URL}/api/get-all`);
+        return response.data || [];
+      } catch (err) {
+        console.error("Error fetching foods:", err);
+        foodList.innerHTML = '<li class="text-red-500">Failed to load food list.</li>';
+        return [];
       }
-    
-      foodSearchInput.addEventListener("input", () => {
-        const query = foodSearchInput.value.toLowerCase();
-        const filteredFoods = allFoods.filter(food =>
-          food.name.toLowerCase().includes(query)
-        );
-        renderFoods(filteredFoods);
-      });
+    }
 
-      function renderFoods(foodArray) {
-        foodList.innerHTML = "";
-        foodArray.forEach((food) => {
-          const item = document.createElement("li");
-          item.className = "p-4 bg-white rounded-2xl space-y-4";
+    function renderFoods(foodArray) {
+      foodList.innerHTML = "";
+      foodArray.forEach((food) => {
+        const li = document.createElement("li");
+        li.className = "bg-white rounded-lg shadow hover:shadow-md transition flex flex-col overflow-hidden";
 
-          const name = document.createElement("div");
-          name.textContent = food.name;
-          name.className = "font-semibold text-lg";
-          item.appendChild(name);
+        const img = document.createElement("img");
+        img.src = food.image || "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
+        img.alt = food.name;
+        img.className = "w-full h-40 object-cover";
 
-          let select = null;
-          if (food.variants?.length) {
-            select = document.createElement("select");
-            select.className = "w-full py-2 border border-gray-300 rounded-xl input appearance-none";
-            food.variants.forEach((variant) => {
-              const opt = document.createElement("option");
-              opt.value = variant;
-              opt.textContent = variant;
-              select.appendChild(opt);
-            });
-            item.appendChild(select);
-          }
+        const content = document.createElement("div");
+        content.className = "p-3 flex flex-col gap-2";
 
-          const noteInput = document.createElement("input");
-          noteInput.placeholder = "Optional note...";
-          noteInput.className = "w-full p-2 outline-none border rounded-xl focus:ring-1 transition";
-          item.appendChild(noteInput);
+        const name = document.createElement("h3");
+        name.textContent = food.name;
+        name.className = "font-semibold text-sm text-center";
 
-          const selectBtn = document.createElement("button");
-          selectBtn.textContent = "Select";
-          selectBtn.className = "bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-xl transition duration-200";
-          item.appendChild(selectBtn);
-
-          selectBtn.addEventListener("click", async () => {
-            if (!currentUser) return alert("Please select your name first");
-
-            const selectedVariant = select?.value || null;
-            const note = noteInput.value?.trim() || null;
-
-            const foodData = {
-              id: food.id,
-              name: food.name,
-              variant: selectedVariant,
-              note,
-              userId: currentUser,
-            };
-
-            userCanvas.innerHTML = "";
-            const displayItem = document.createElement("li");
-            displayItem.className = "p-4 bg-white shadow rounded-xl";
-            displayItem.textContent = `${food.name}` + 
-              (selectedVariant ? ` (${selectedVariant})` : "") +
-              (note ? ` — ${note}` : "");
-            userCanvas.appendChild(displayItem);
-
-            try {
-              await axios.post(`${APP_URL}/api/save-temp-selection`, foodData);
-              localStorage.setItem("tempSelection", JSON.stringify(foodData));
-            } catch (err) {
-              console.error("Temp save failed:", err);
-              alert("Failed to save selection.");
-            }
+        let select = null;
+        if (food.variants?.length) {
+          select = document.createElement("select");
+          select.className = "w-full py-1 px-2 text-sm border border-gray-300 rounded-md appearance-none";
+          food.variants.forEach((variant) => {
+            const opt = document.createElement("option");
+            opt.value = variant;
+            opt.textContent = variant;
+            select.appendChild(opt);
           });
-
-          foodList.appendChild(item);
-        });
-      }
-
-      clearBtn.addEventListener("click", async () => {
-        if (!currentUser) return alert("Please select a user.");
-        const normalizedUserId = currentUser.trim().toLowerCase();
-
-        userCanvas.innerHTML = "";
-        localStorage.removeItem("tempSelection");
-
-        try {
-          await axios.delete(`${APP_URL}/api/clear-temp-selection/${normalizedUserId}`);
-          console.log("Successfully cleared temp selection.");
-        } catch (err) {
-          console.error("Failed to clear temp selection:", err);
-          alert("Failed to clear selection on the server.");
+          content.appendChild(select);
         }
-      });
 
-      submitBtn.addEventListener("click", async () => {
-        try {
-          const response = await axios.get(`${APP_URL}/api/temp-selections`)
-          const payload = response.data || [];
-          await axios.post(`${APP_URL}/api/submit-all`, payload);
-          alert("Submitted all selections to Telegram!");
-        } catch (err) {
-          console.error("Submit error:", err);
-          alert("Failed to submit selections.");
-        }
-      });
+        const noteInput = document.createElement("input");
+        noteInput.placeholder = "Optional note...";
+        noteInput.className = "w-full p-1 px-2 text-sm outline-none border rounded-md focus:ring-1 transition";
+        content.appendChild(noteInput);
 
-      async function pollSelections() {
-        try {
-          const response = await axios.get(`${APP_URL}/api/temp-selections`)
-          const selections = response.data || [];
+        const selectBtn = document.createElement("button");
+        selectBtn.textContent = "Select";
+        selectBtn.className = "py-2 px-6 rounded-xl bg-blue-400 text-white hover:bg-blue-500 w-full sm:w-auto transition duration-200";
+        content.appendChild(selectBtn);
+
+        selectBtn.addEventListener("click", async () => {
+          if (!currentUser) return alert("Please select your name first");
+
+          const selectedVariant = select?.value || null;
+          const note = noteInput.value?.trim() || null;
+
+          const foodData = { id: food.id, name: food.name, variant: selectedVariant, note, userId: currentUser };
+
           userCanvas.innerHTML = "";
-          selections.forEach((sel) => {
-            if (!sel || !sel.userId || !sel.name) return;
+          const displayItem = document.createElement("li");
+          displayItem.className = "p-2 bg-white shadow rounded-md text-sm";
+          displayItem.textContent = `${food.name}${selectedVariant ? ` (${selectedVariant})` : ""}${note ? ` — ${note}` : ""}`;
+          userCanvas.appendChild(displayItem);
 
-            const item = document.createElement("li");
-            item.textContent = `${sel.userId}: ${sel.name}${sel.variant ? ` (${sel.variant})` : ""}${sel.note ? ` - NOTE: ${sel.note}` : ""}`;
-            item.className = "bg-white bg-opacity-70 rounded-xl p-4 shadow transition";
-            userCanvas.appendChild(item);
-          });
+          try {
+            await axios.post(`${APP_URL}/api/save-temp-selection`, foodData);
+            localStorage.setItem("tempSelection", JSON.stringify(foodData));
+          } catch (err) {
+            console.error("Temp save failed:", err);
+            alert("Failed to save selection.");
+          }
+        });
 
-        } catch (err) {
-          console.error("Polling error:", err);
-        }
+        li.appendChild(img);
+        content.insertBefore(name, content.firstChild);
+        li.appendChild(content);
+        foodList.appendChild(li);
+      });
+    }
+
+    clearBtn.addEventListener("click", async () => {
+      if (!currentUser) return alert("Please select a user.");
+      const normalizedUserId = currentUser.trim().toLowerCase();
+
+      userCanvas.innerHTML = "";
+      localStorage.removeItem("tempSelection");
+
+      try {
+        await axios.delete(`${APP_URL}/api/clear-temp-selection/${normalizedUserId}`);
+        console.log("Successfully cleared temp selection.");
+      } catch (err) {
+        console.error("Failed to clear temp selection:", err);
+        alert("Failed to clear selection on the server.");
       }
+    });
 
-      window.onload = async () => {
-        submitBtn.classList.toggle("hidden", currentUser !== "Raksa");
+    // Submit button
+    let isSubmitting = false;
 
-        allFoods = await fetchFoods();
-        renderFoods(allFoods);
+    submitBtn.addEventListener("click", async () => {
+      if (isSubmitting) return;
+      isSubmitting = true;
 
-        pollSelections();
-        setInterval(pollSelections, 3000);
-      };
-    </script>
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
 
-  </body>
+      try {
+        const response = await axios.get(`${APP_URL}/api/temp-selections`);
+        const payload = response.data || [];
+
+        await axios.post(`${APP_URL}/api/submit-all`, payload);
+
+        alert("Submitted all selections to Telegram!");
+      } catch (err) {
+        console.error("Submit error:", err);
+        alert("Failed to submit selections.");
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+      }
+    });
+
+
+    async function pollSelections() {
+      try {
+        const response = await axios.get(`${APP_URL}/api/temp-selections`);
+        const selections = response.data || [];
+        userCanvas.innerHTML = "";
+        selections.forEach((sel) => {
+          if (!sel || !sel.userId || !sel.name) return;
+          const item = document.createElement("li");
+          item.textContent = `${sel.userId}: ${sel.name}${sel.variant ? ` (${sel.variant})` : ""}${sel.note ? ` - NOTE: ${sel.note}` : ""}`;
+          item.className = "bg-white bg-opacity-70 rounded-xl p-4 shadow transition";
+          userCanvas.appendChild(item);
+        });
+      } catch (err) {
+        console.error("Polling error:", err);
+      }
+    }
+
+    window.onload = async () => {
+      submitBtn.classList.toggle("hidden", currentUser !== "Raksa");
+      allFoods = await fetchFoods();
+      renderFoods(allFoods);
+      pollSelections();
+      setInterval(pollSelections, 3000);
+    };
+  </script>
+</body>
 </html>
