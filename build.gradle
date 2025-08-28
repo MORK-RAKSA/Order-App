@@ -52,8 +52,7 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
 	testImplementation "org.mapstruct:mapstruct:1.5.5.Final"
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
-	implementation 'org.telegram:telegrambots-spring-boot-starter:6.9.7'
-
+//	implementation 'org.telegram:telegrambots-spring-boot-starter:6.9.7'
 
 }
 

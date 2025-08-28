@@ -6,6 +6,7 @@ import com.food.order.service.FoodSelectionService;
 import com.food.order.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -91,6 +92,11 @@ public class TelegramServiceImpl implements TelegramService {
         }
         msg.append("\n-----------------------------------");
         return msg.toString();
+    }
+
+    @Scheduled(fixedRateString = "PT10S")
+    public void sendTestMessage() {
+        telegramRestClient.sendMessage("Test Message from Spring Boot Application", "Test Message from Spring Boot Application");
     }
 
 }

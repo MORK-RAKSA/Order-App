@@ -29,6 +29,4 @@ public class TelegramRestClient {
         restTemplate.postForEntity(url, requestToGroup, String.class);
         restTemplate.postForEntity(url, request, String.class);
     }
-
-
 }
