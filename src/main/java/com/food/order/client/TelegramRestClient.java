@@ -22,10 +22,13 @@ public class TelegramRestClient {
         String url = "https://api.telegram.org/bot" + telegramProperties.getBotToken() + "/sendMessage";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         Map<String, String> bodyGroup = Map.of("chat_id", telegramProperties.getChatId(), "text", messageGroup);
         HttpEntity<Map<String, String>> requestToGroup = new HttpEntity<>(bodyGroup, headers);
+
         Map<String, String> bodyOwner = Map.of("chat_id", telegramProperties.getOwnerChatId(), "text", messageOwner);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(bodyOwner, headers);
+
         restTemplate.postForEntity(url, requestToGroup, String.class);
         restTemplate.postForEntity(url, request, String.class);
     }

@@ -93,12 +93,6 @@ public class TelegramServiceImpl implements TelegramService {
         msg.append("\n-----------------------------------");
         return msg.toString();
     }
-
-    @Scheduled(fixedRateString = "PT10S")
-    public void sendTestMessage() {
-        telegramRestClient.sendMessage("Test Message from Spring Boot Application", "Test Message from Spring Boot Application");
-    }
-
 }
 
 

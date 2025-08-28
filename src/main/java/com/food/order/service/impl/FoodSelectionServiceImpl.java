@@ -9,6 +9,8 @@ import com.food.order.model.mapper.FoodMapper;
 import com.food.order.repository.FoodRepository;
 import com.food.order.service.FoodSelectionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FoodSelectionServiceImpl implements FoodSelectionService {
@@ -58,6 +61,11 @@ public class FoodSelectionServiceImpl implements FoodSelectionService {
         return entity.stream()
                 .map(foodMapper::toResponseDto)
                 .toList();
+    }
+
+    @Scheduled(fixedRateString = "PT49S")
+    public void sendTestMessage() {
+        log.info("Scheduled task executed: Current selections count = {}", selections.size());
     }
 
     public void clearAll() {
